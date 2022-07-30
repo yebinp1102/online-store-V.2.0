@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 // 페이지
 import Auth from './pages/Auth'
 import Home from './pages/Home'
+import Posting from './pages/Posting'
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem('profile'))
@@ -17,6 +18,7 @@ const App = () => {
       <Routes>
         <Route path='/auth' element={(!user ? <Auth /> : <Navigate to="/" />)} />
         <Route path='/posts' element={<Home />} />
+        <Route path='/posting' element={<Posting />} />
       </Routes>
     </BrowserRouter>
   )
