@@ -1,24 +1,28 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Item from './Item'
+import Paginate from './Pagination'
 import { useDispatch, useSelector} from 'react-redux'
-import { getPostsBySearch, getPosts } from '../_actions/posts'
-import { useNavigate } from 'react-router-dom'
+import { getPostsBySearch } from '../_actions/posts'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import {TextField, CircularProgress} from '@material-ui/core'
 import ChipInput from 'material-ui-chip-input'
 
+function useQuery() {
+  // url의 물음표 이후부터를 문자열로 반환 -> 이것을 URLSearchParams 객체로 반환
+  return new URLSearchParams(useLocation().search);
+}
 
 const Posts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const query = useQuery();
+  const page = query.get('page') || 1
+  const searchQuery = query.get('searchQuery')
   const { posts, isLoading } = useSelector((state) => state.posts);
   const [search, setSearch] = useState('')
   const [tags, setTags] = useState([]);
-
-  useEffect(()=>{
-    dispatch(getPosts())
-  },[])
 
   const searchPost = () => {
     if(search.trim() || tags){
@@ -81,6 +85,9 @@ const Posts = () => {
             <Item key={post._id} post={post} />
           ))}
         </div>
+      )}
+      {(!searchQuery && !tags.length) && (
+        <Paginate page={page} />
       )}
     </Container>
   )

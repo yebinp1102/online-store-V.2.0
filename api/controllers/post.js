@@ -12,16 +12,21 @@ export const createPost = async (req, res) => {
   }
 } 
 
-
+// 모든 게시글 정보 읽기
 export const getPosts = async (req, res) => {
+  const { page } = req.query
   try{
-    const posts = await Post.find()
-    res.status(200).json(posts)
+    const limit = 9;
+    const startIndex = (Number(page) - 1) * limit
+    const total = await Post.countDocuments({})
+    const posts = await Post.find().sort({_id: -1}).limit(limit).skip(startIndex); // sort 메서드는 최신순으로 정렬하기 위해 사용
+    res.status(200).json({ data : posts, currentPage : Number(page), numberOfPages : Math.ceil(total / limit)})
   }catch(err){
     res.status(500).json({message: err.message})
   }
 }
 
+// 검색 결과 찾기
 export const getPostsBySearch = async (req, res) => {
   const { searchQuery, tags } = req.query;
   try{
