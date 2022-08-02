@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 // 컴포넌트
 import Header from '../components/Header'
+import Posts from '../components/Posts'
 
 
 
@@ -10,6 +11,7 @@ const Home = () => {
   return (
     <Container>
       <Header />
+      <Posts />
     </Container>
   )
 }
@@ -17,7 +19,4 @@ const Home = () => {
 export default Home
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: #eee;
 `;

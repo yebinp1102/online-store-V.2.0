@@ -16,3 +16,4 @@ export const signUp = (formData) => API.post('/api/auth/signup', formData);
 
 // post
 export const createPost = (newPost) => API.post('/api/posts', newPost)
+export const fetchPosts = () => API.get(`api/posts`);
