@@ -1,4 +1,4 @@
-import {CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH} from './types'
+import {CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE} from './types'
 
 // posts === state
 const posts = (state = { isLoading: true, posts: [] }, action) => {
@@ -16,6 +16,11 @@ const posts = (state = { isLoading: true, posts: [] }, action) => {
         currentPage: action.payload.currentPage,
         numberOfPages: action.payload.numberOfPages,
     };
+    case FETCH_ONE :
+      return {
+        ...state,
+        post: action.payload.post
+    }
     case FETCH_BY_SEARCH :
       return {
         ...state,
