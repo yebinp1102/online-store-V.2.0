@@ -2,19 +2,47 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import Item from './Item'
 import { useDispatch, useSelector} from 'react-redux'
-import {CircularProgress} from '@material-ui/core'
-import { getPosts } from '../_actions/posts'
-
+import { getPostsBySearch, getPosts } from '../_actions/posts'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import {TextField, CircularProgress} from '@material-ui/core'
+import ChipInput from 'material-ui-chip-input'
 
 
 const Posts = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { posts, isLoading } = useSelector((state) => state.posts);
+  const [search, setSearch] = useState('')
+  const [tags, setTags] = useState([]);
 
   useEffect(()=>{
     dispatch(getPosts())
   },[])
 
+  const searchPost = () => {
+    if(search.trim() || tags){
+      dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
+      navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`)
+    }else{
+      navigate('/')
+    }
+  }
+
+  // input 태그에 검색어를 입력하고 "엔터"를 입력했을 때 실행되는 함수
+  const handleKeyPress = (e) => {
+    if (e.keyCode === 13) {
+      searchPost();
+    }
+  };
+  
+  const handleAdd = (tag) => {
+    setTags([...tags, tag])
+  }
+
+  const handleDelete = (tagToDelete) => {
+    setTags(tags.filter((tag) => tag !== tagToDelete))
+  }
 
   if(!posts.length && !isLoading) return '아직까지 생성된 포스트가 없습니다. 첫 글을 남겨보세요 !'
 
@@ -22,6 +50,27 @@ const Posts = () => {
     <Container className='responsiveContainer'>
       <h2 className='headtitle'>최신 상품</h2>
       <hr/>
+      <SearchBars>
+        <TextField 
+          name='search'
+          variant='outlined'
+          label='상품 찾기'
+          fullWidth
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={handleKeyPress}
+        />
+        <ChipInput 
+          className='chipInput'
+          value={tags}
+          onAdd={handleAdd}
+          onDelete={handleDelete}
+          fullWidth
+          label="태그로 검색하기"
+          variant='outlined'
+        />
+        <button onClick={searchPost} className="searchBtn">검색</button>
+      </SearchBars>
       {isLoading ? 
         <LoadingContainer>
           <CircularProgress />

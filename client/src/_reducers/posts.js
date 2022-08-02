@@ -1,4 +1,4 @@
-import {CREATE, START_LOADING, FETCH_ALL, END_LOADING} from './types'
+import {CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH} from './types'
 
 // posts === state
 const posts = (state = { isLoading: true, posts: [] }, action) => {
@@ -14,6 +14,11 @@ const posts = (state = { isLoading: true, posts: [] }, action) => {
         ...state,
         posts: action.payload
     };
+    case FETCH_BY_SEARCH :
+      return {
+        ...state,
+        posts: action.payload.data
+      }
     default :
       return state;
   }
