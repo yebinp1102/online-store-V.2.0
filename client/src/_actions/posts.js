@@ -1,5 +1,5 @@
 import * as api from '../api'
-import { CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE } from '../_reducers/types'
+import { CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE } from '../_reducers/types'
 
 export const getPost = (id) => async(dispatch) => {
   try{
@@ -39,6 +39,15 @@ export const getPostsBySearch = (searchQuery) => async(dispatch) => {
     const { data: { data } } = await api.fetchPostsBySearch(searchQuery);
     dispatch({ type: FETCH_BY_SEARCH, payload: {data}})
     dispatch({ type: END_LOADING})
+  }catch(err){
+    console.log(err)
+  }
+}
+
+export const deletePost = (id) => async(dispatch) => {
+  try{
+    await api.deletePost(id)
+    dispatch({type: DELETE, payload: id})
   }catch(err){
     console.log(err)
   }

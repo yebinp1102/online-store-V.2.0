@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import { getPost, getPostsBySearch } from '../_actions/posts';
+import { deletePost, getPost, getPostsBySearch } from '../_actions/posts';
 import { CircularProgress } from '@material-ui/core';
 
 
 const Detail = () => {
   const { post, isLoading} = useSelector((state) => state.posts)
+  const user = JSON.parse(localStorage.getItem('profile'))
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {id} = useParams();
 
   useEffect(() => {
@@ -27,6 +29,11 @@ const Detail = () => {
     return <CircularProgress size='7em' />
   }
 
+  const handleDelete = () => {
+    dispatch(deletePost(post._id))
+    navigate('/');
+  }
+
   return (
     post && 
     <Container>
@@ -36,6 +43,11 @@ const Detail = () => {
               <p>상품 등록일 : {post?.createdAt.slice(0, 10)}</p>
               <p className='creator'>판매자 : {post?.username}</p>
             </div>
+            {(user?.result?._id === post?.creator) && (
+              <div className='updateBtns'>
+                <button className='update' onClick={handleDelete}>삭제하기</button>
+              </div>
+            )}
           </Header>
           <hr />
           <Info>

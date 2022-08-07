@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Post from '../models/Post.js'
 
 // 특정 게시글 정보 읽기
@@ -46,4 +47,17 @@ export const getPostsBySearch = async (req, res) => {
   }catch(err){
     res.status(404).json({ message: err.message})
   }
+}
+
+// 상품 삭제하기
+export const deletePost = async (req, res) => {
+  const {id} = req.params;
+  if(!mongoose.Types.ObjectId.isValid(id)) res.status(404).send('존재하지 않는 상품 입니다.')
+  try{
+    await Post.findByIdAndRemove(id);
+    return res.json({message: '게시글이 성공적으로 삭제 되었습니다.'})
+  }catch(err){
+    res.status(500).json({message: err.message})
+  }
+
 }
