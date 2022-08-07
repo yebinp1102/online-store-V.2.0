@@ -29,6 +29,10 @@ const Detail = () => {
     return <CircularProgress size='7em' />
   }
 
+  const handleToUpdate = () => {
+    navigate('/posting', {state: id})
+  }
+
   const handleDelete = () => {
     dispatch(deletePost(post._id))
     navigate('/');
@@ -45,6 +49,7 @@ const Detail = () => {
             </div>
             {(user?.result?._id === post?.creator) && (
               <div className='updateBtns'>
+                <button className='update' onClick={handleToUpdate}>수정하기</button>
                 <button className='update' onClick={handleDelete}>삭제하기</button>
               </div>
             )}

@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import {useDispatch} from 'react-redux'
-import { createPost } from '../_actions/posts'
-import { useNavigate } from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
+import { createPost, getPost, updatePost } from '../_actions/posts'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import FileBase from 'react-file-base64'
 
 const Posting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('profile'))
+  // 상세 페이지에서 수정하기 버튼 클릭 > 해당 상품의 _id값을 state에 담아서 전달받음.
+  const { state } = useLocation();
+  const post = useSelector((result) => state ? result.posts.post : null)
   const [postData, setPostData] = useState({
     title: "",
     desc: "",
@@ -16,6 +20,24 @@ const Posting = () => {
     selectedFile: "",
     price: "",
   })
+
+  useEffect(()=>{
+    if(state){
+      dispatch(getPost(state))
+    }
+  },[state])
+
+  useEffect(()=>{
+    if(post){
+      setPostData({
+        title: post.title,
+        desc: post.desc,
+        tags: post.tags,
+        selectedFile: post.selectedFile,
+        price: Number(post.price),
+      })
+    }
+  },[post])
 
   const clear = () => {
     setPostData({
@@ -29,9 +51,14 @@ const Posting = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPost({...postData, username: user?.result?.username }))
-    clear()
-    navigate('/')
+    if(state){
+      dispatch(updatePost(state, {...postData, username: user?.result?.username }, navigate))
+      clear()
+    }else{
+      dispatch(createPost({...postData, username: user?.result?.username }))
+      clear()
+      navigate('/')
+    }
   }
 
   if(!user?.result?.username){
@@ -45,7 +72,7 @@ const Posting = () => {
   return (
     <Container>
       <div className='responsiveContainer'>
-        <h3 className='title'>상품 올리기</h3>
+        <h3 className='title'>{state ? '상품 내용 수정하기' : '상품 올리기'}</h3>
         <form autoComplete='off' onSubmit={handleSubmit}>
           <input
             name='title'
@@ -81,7 +108,7 @@ const Posting = () => {
             onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} 
           />
           <BtnWrap>
-            <button className='btn' type='submit'>글 올리기</button>
+            <button className='btn' type='submit'>{ state ? "상품 내용 업데이트" : "글 올리기"}</button>
           </BtnWrap>
         </form>
       </div>

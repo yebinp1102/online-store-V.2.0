@@ -1,5 +1,5 @@
 import * as api from '../api'
-import { CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE } from '../_reducers/types'
+import { CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE, UPDATE } from '../_reducers/types'
 
 export const getPost = (id) => async(dispatch) => {
   try{
@@ -48,6 +48,17 @@ export const deletePost = (id) => async(dispatch) => {
   try{
     await api.deletePost(id)
     dispatch({type: DELETE, payload: id})
+  }catch(err){
+    console.log(err)
+  }
+}
+
+export const updatePost = (id, post, navigate) => async(dispatch) => {
+  try{
+    // data는 업데이트된 포스팅 정보를 갖게 됨
+    const {data} = await api.updatePost(id, post);
+    dispatch({ type: UPDATE, payload: data })
+    navigate(`/detail/${id}`)
   }catch(err){
     console.log(err)
   }
