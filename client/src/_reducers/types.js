@@ -10,6 +10,7 @@ export const FETCH_BY_SEARCH = 'FETCH_BY_SEARCH';
 export const FETCH_ONE = 'FETCH_ONE';
 export const DELETE = 'DELETE'
 export const UPDATE = 'UPDATE'
+export const LIKEPOST = 'LIKEPOST'
 
 
 // 로딩 관련

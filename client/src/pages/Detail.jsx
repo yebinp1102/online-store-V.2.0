@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import { deletePost, getPost, getPostsBySearch } from '../_actions/posts';
+import { deletePost, getPost, getPostsBySearch, likePost } from '../_actions/posts';
 import { CircularProgress } from '@material-ui/core';
-
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Detail = () => {
   const { post, isLoading} = useSelector((state) => state.posts)
@@ -12,12 +13,14 @@ const Detail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {id} = useParams();
+  const [likes, setLikes] = useState(post?.likes)
 
   useEffect(() => {
     dispatch(getPost(id));
   }, [id]);
 
   useEffect(() => {
+    setLikes(post?.likes)
     if (post) {
       dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
     }
@@ -27,6 +30,33 @@ const Detail = () => {
 
   if(isLoading){
     return <CircularProgress size='7em' />
+  }
+
+  const userId = user?.result?._id
+  const hasLikedPost = post.likes.find((like) => like === userId);
+
+  const handleLike = async () => {
+    await dispatch(likePost(id))
+    dispatch(getPost(id))
+    if(hasLikedPost){
+      setLikes(post.likes.filter((id) => id !== userId))
+    }else{
+      setLikes([...post.likes, userId])
+    }
+  }
+
+  const Likes = () => {
+    return likes.find((like) => like === userId) ? (
+      <div className='likes'>
+        <FavoriteIcon />
+        <span>좋아요 취소</span>
+      </div>
+    ) : (
+      <div className='likes'>
+        <FavoriteBorderIcon />
+        <span>좋아요</span>
+      </div>
+    )
   }
 
   const handleToUpdate = () => {
@@ -67,6 +97,12 @@ const Detail = () => {
               </div>
               <p className='desc'>{post?.desc}</p>
               <div className='Btns'>
+                <LikePost>
+                  <p>{likes.length}명이 이 상품을 좋아 합니다.</p>
+                  <button className='likeBtn' disabled={!user?.result} onClick={handleLike}>
+                    <Likes/>
+                  </button>
+                </LikePost>
                 <div className='buy'>
                   <button className='buyBtn'>상품 구매하기</button>
                 </div>
@@ -189,5 +225,37 @@ const Description = styled.div`
         cursor: pointer;
       }
     }
+  }
+`;
+
+const LikePost = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+
+  .likeBtn{
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid #fff;
+
+
+    .likes{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      color: salmon;
+
+      span{
+        padding-top: 3px;
+      }
+    }
+  }
+
+  .likeBtn:hover{
+    border-bottom: 2px solid salmon;
   }
 `;

@@ -73,3 +73,23 @@ export const updatePost = async (req, res) => {
     res.status(500).json({message: err.message})
   }
 }
+
+// 상품 찜하기
+export const likePost = async(req, res) => {
+  const { id } = req.params;
+  if(!req.userId) return res.json({ message: '해당 기능을 수행할 수 없는 사용자 입니다.'})
+  if (!mongoose.Types.ObjectId.isValid(id)) res.status(404).send('존재하지 않는 상품 입니다.')
+  try{
+    const post = await Post.findById(id);
+    const index = post.likes.findIndex((id) => id === String(req.userId));
+    if(index === -1 ){
+      post.likes.push(req.userId);
+    }else{
+      post.likes = post.likes.filter((id) => id !==String(req.userId))
+    }
+    const updatedPost = await Post.findByIdAndUpdate(id, post, {new: true})
+    res.status(200).json(updatedPost);
+  }catch(err){
+    res.status(500).json({message: err.message})
+  }
+}

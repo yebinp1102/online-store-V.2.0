@@ -9,7 +9,10 @@ const UserSchema = mongoose.Schema({
     type : Boolean,
     default: false,
   },
-  cart : Array,
+  cart : {
+    type: Array,
+    default: []
+  },
   createdAt: {
     type: Date,
     default: new Date()
