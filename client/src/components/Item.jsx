@@ -14,11 +14,11 @@ const Item = ({post}) => {
       <div className='img' style={{backgroundImage: `url(${post.selectedFile})`} }></div>
       <div className='productInfo'>
         <div className='flex-row'>
-        <p>판매자 : {post.username}</p>
-        <p>{post.createdAt.substr(0,10)}</p>
+          <p>판매자 : {post.username}</p>
+          <p>{post.createdAt.substr(0,10)}</p>
         </div>
-        <h3>{post.title}</h3>
-        <p className='flex-end'>가격 : 100,000원(won)</p>
+        <h3 className='title'>{post.title}</h3>
+        <p className='price'>{post.price ? `가격 :${post.price.toLocaleString('ko-KR')} 원(won)` : null}</p>
       </div>
     </Container>
   )
@@ -56,7 +56,11 @@ const Container = styled.div`
       justify-content: space-between;
     }
 
-    .flex-end{
+    .title{
+      margin: 10px 0;
+    }
+    
+    .price{
       display: flex;
       justify-content: flex-end;
     }

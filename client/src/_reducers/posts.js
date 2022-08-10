@@ -1,4 +1,4 @@
-import {CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE} from './types'
+import {CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE, UPDATE, LIKEPOST, COMMENT} from './types'
 
 // posts === state
 const posts = (state = { isLoading: true, posts: [] }, action) => {
@@ -25,6 +25,21 @@ const posts = (state = { isLoading: true, posts: [] }, action) => {
       return {
         ...state,
         posts: action.payload.data
+      }
+    case DELETE :
+      return { ...state, posts: state.posts.filter((post) => post._id !== action.payload)};
+    case UPDATE :
+    case LIKEPOST :
+      return { ...state, posts: state.posts.map((post)=> post._id === action.payload._id ? action.payload : post)}  
+    case COMMENT : 
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          if(post._id === action.payload._id){
+            return action.payload
+          }
+          return post;
+        })
       }
     default :
       return state;
