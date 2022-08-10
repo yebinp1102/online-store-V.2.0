@@ -8,7 +8,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Detail = () => {
-  const { post, isLoading} = useSelector((state) => state.posts)
+  const { post, posts, isLoading} = useSelector((state) => state.posts)
   const user = JSON.parse(localStorage.getItem('profile'))
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,6 +68,12 @@ const Detail = () => {
     navigate('/');
   }
 
+  const openDetail = (id) => {
+    navigate(`/detail/${id}`)
+  }
+
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+
   return (
     post && 
     <Container>
@@ -109,6 +115,20 @@ const Detail = () => {
               </div>
             </Description>
           </Info>
+          {!!recommendedPosts.length && (
+            <Recommendation>
+              <h3>관련 추천 상품</h3>
+              <hr/>
+              <div className='cardWrap'>
+                {recommendedPosts.map(({ title, selectedFile, _id }) => (
+                  <RecommendationCard className='card' key={_id} onClick={() => openDetail(_id)}>
+                    <img src={selectedFile} />
+                    <h4>{title}</h4>
+                  </RecommendationCard>
+                ))}
+              </div> 
+            </Recommendation>
+          )}
         </div>
     </Container>
   )
@@ -125,6 +145,7 @@ const Container = styled.div`
 
   .detail{
     width: 1200px;
+    margin-top: 400px;
     padding: 2rem;
     border-radius: 10px;
     background-color: #fff;
@@ -258,4 +279,33 @@ const LikePost = styled.div`
   .likeBtn:hover{
     border-bottom: 2px solid salmon;
   }
+`;
+
+const Recommendation = styled.div`
+  margin: 100px 0;
+  background-color: #eee;
+  padding: 1rem;
+  border-radius: 10px;
+
+  .cardWrap{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+`;
+
+const RecommendationCard = styled.div`
+  cursor: pointer;
+  padding: .75rem;
+  border-radius: 10px;
+  border: 2px solid #fff;
+
+  img{
+    width: 100%;
+    height: auto;
+  }
+
+  h4{
+    margin: 15px 0;
+  }
+  
 `;
