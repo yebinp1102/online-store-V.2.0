@@ -11,7 +11,7 @@ export const FETCH_ONE = 'FETCH_ONE';
 export const DELETE = 'DELETE'
 export const UPDATE = 'UPDATE'
 export const LIKEPOST = 'LIKEPOST'
-
+export const COMMENT = 'COMMENT'
 
 // 로딩 관련
 export const START_LOADING = "START_LOADING"

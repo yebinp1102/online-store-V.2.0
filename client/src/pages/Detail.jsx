@@ -6,6 +6,7 @@ import { deletePost, getPost, getPostsBySearch, likePost } from '../_actions/pos
 import { CircularProgress } from '@material-ui/core';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import CommentSection from '../components/CommentSection';
 
 const Detail = () => {
   const { post, posts, isLoading} = useSelector((state) => state.posts)
@@ -129,6 +130,7 @@ const Detail = () => {
               </div> 
             </Recommendation>
           )}
+          <CommentSection post={post} />
         </div>
     </Container>
   )
