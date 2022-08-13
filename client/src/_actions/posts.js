@@ -1,5 +1,5 @@
 import * as api from '../api'
-import { CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE, UPDATE, LIKEPOST, COMMENT } from '../_reducers/types'
+import { CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE, UPDATE, LIKEPOST, COMMENT, HOTITEMS } from '../_reducers/types'
 
 export const getPost = (id) => async(dispatch) => {
   try{
@@ -78,6 +78,17 @@ export const commentPost = (value, id) => async(dispatch) => {
     const { data } = await api.comment(value, id)
     dispatch({type: COMMENT, payload: data })
     return data.comments
+  }catch(err){
+    console.log(err)
+  }
+}
+
+export const getHotItems = () => async(dispatch) => {
+  try{
+    dispatch({ type: START_LOADING })
+    const { data } = await api.fetchHotItems();
+    dispatch({ type: HOTITEMS, payload: data})
+    dispatch({ type: END_LOADING})
   }catch(err){
     console.log(err)
   }

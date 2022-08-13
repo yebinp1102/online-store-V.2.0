@@ -15,6 +15,7 @@ const Detail = () => {
   const navigate = useNavigate();
   const {id} = useParams();
   const [likes, setLikes] = useState(post?.likes)
+  console.log('post : ', post)
 
   useEffect(() => {
     dispatch(getPost(id));
@@ -139,7 +140,6 @@ const Detail = () => {
 export default Detail
 
 const Container = styled.div`
-  height: 100vh;
   background: #eee;
   display: flex;
   align-items: center;
@@ -147,7 +147,7 @@ const Container = styled.div`
 
   .detail{
     width: 1200px;
-    margin-top: 400px;
+    margin: 150px 0;
     padding: 2rem;
     border-radius: 10px;
     background-color: #fff;
