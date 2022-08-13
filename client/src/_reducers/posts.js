@@ -1,4 +1,4 @@
-import {CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE, UPDATE, LIKEPOST, COMMENT} from './types'
+import {CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE, UPDATE, LIKEPOST, COMMENT, HOTITEMS} from './types'
 
 // posts === state
 const posts = (state = { isLoading: true, posts: [] }, action) => {
@@ -40,6 +40,11 @@ const posts = (state = { isLoading: true, posts: [] }, action) => {
           }
           return post;
         })
+      }
+    case HOTITEMS :
+      return {
+        ...state,
+        hotItems : action.payload
       }
     default :
       return state;

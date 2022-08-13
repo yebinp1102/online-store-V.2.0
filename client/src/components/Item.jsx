@@ -17,7 +17,7 @@ const Item = ({post}) => {
           <p>판매자 : {post.username}</p>
           <p>{post.createdAt.substr(0,10)}</p>
         </div>
-        <h3 className='title'>{post.title}</h3>
+        <h3 className='title'>{post.title.length > 23 ? `${(post.title).slice(0,23)}...` : post.title}</h3>
         <p className='price'>{post.price ? `가격 :${post.price.toLocaleString('ko-KR')} 원(won)` : null}</p>
       </div>
     </Container>

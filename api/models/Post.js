@@ -12,6 +12,10 @@ const postSchema = mongoose.Schema({
     type: [String],
     default: []
   },
+  totalLikes : {
+    type: Number,
+    default : 0
+  },
   comments: {
     type: [String],
     default: []

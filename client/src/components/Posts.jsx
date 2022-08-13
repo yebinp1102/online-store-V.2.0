@@ -47,7 +47,7 @@ const Posts = () => {
   const handleDelete = (tagToDelete) => {
     setTags(tags.filter((tag) => tag !== tagToDelete))
   }
-
+  
   if(!posts.length && !isLoading) return '아직까지 생성된 포스트가 없습니다. 첫 글을 남겨보세요 !'
 
   return (
