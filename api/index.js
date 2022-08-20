@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 // routes
 import authRoutes from './routes/auth.js'
 import postRoutes from './routes/post.js'
+import userRoutes from './routes/user.js'
 
 const app = express();
 
@@ -16,6 +17,7 @@ dotenv.config();
 app.use(cors());
 app.use('/api/auth', authRoutes)
 app.use('/api/posts', postRoutes)
+app.use('/api/user', userRoutes)
 
 // const CONNECTION_URL = process.env.CONNECTION_URL
 const PORT = process.env.PORT || 5000

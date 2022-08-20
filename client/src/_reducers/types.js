@@ -14,6 +14,9 @@ export const LIKEPOST = 'LIKEPOST'
 export const COMMENT = 'COMMENT'
 export const HOTITEMS = 'HOTITEMS'
 
+// user 관련
+export const ADDTOLIKESLIST = 'ADDTOLIKESLIST'
+
 // 로딩 관련
 export const START_LOADING = "START_LOADING"
 export const END_LOADING = "END_LOADING"

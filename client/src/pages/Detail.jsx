@@ -7,6 +7,7 @@ import { CircularProgress } from '@material-ui/core';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentSection from '../components/CommentSection';
+import {addToLikesList} from '../_actions/user'
 
 const Detail = () => {
   const { post, posts, isLoading} = useSelector((state) => state.posts)
@@ -15,7 +16,6 @@ const Detail = () => {
   const navigate = useNavigate();
   const {id} = useParams();
   const [likes, setLikes] = useState(post?.likes)
-  console.log('post : ', post)
 
   useEffect(() => {
     dispatch(getPost(id));
@@ -39,11 +39,14 @@ const Detail = () => {
 
   const handleLike = async () => {
     await dispatch(likePost(id))
+    dispatch(addToLikesList(id, userId))
     dispatch(getPost(id))
     if(hasLikedPost){
       setLikes(post.likes.filter((id) => id !== userId))
+      alert("찜 목록에서 해당 상품을 삭제 했습니다.")
     }else{
       setLikes([...post.likes, userId])
+      alert("찜 목록에 해당 상품을 추가 했습니다.")
     }
   }
 
