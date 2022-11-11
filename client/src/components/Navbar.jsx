@@ -45,7 +45,7 @@ const Navbar = () => {
         <div className='rightMenu'>
           {user ? (
             <>
-              <Link to='/likes'>찜 목록</Link>
+              <Link to='/user/likes'>찜 목록</Link>
               <Link to='/posting'>상품 올리기</Link>
               <p onClick={UserLogout}>로그아웃</p>
             </>

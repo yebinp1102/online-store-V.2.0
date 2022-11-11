@@ -27,6 +27,7 @@ export const comment = (value, id) => API.post(`/api/posts/${id}/commentPost`, {
 // post : version 0.2.1
 export const fetchHotItems = () => API.get(`api/posts/hotItems`)
 
-
 // user 
 export const addToLikesList = (id, userId) => API.post('api/user/addToLikesList' ,{id, userId})
+export const removeItemFromCart = (productId) => API.get(`api/user/removeFromCart?id=${productId}`)
+export const getListItems = (lists) => API.post(`/api/user/listItems`, lists)

@@ -109,7 +109,7 @@ const Detail = () => {
               <p className='desc'>{post?.desc}</p>
               <div className='Btns'>
                 <LikePost>
-                  <p>{likes.length}명이 이 상품을 좋아 합니다.</p>
+                  <p>{likes?.length}명이 이 상품을 좋아 합니다.</p>
                   <button className='likeBtn' disabled={!user?.result} onClick={handleLike}>
                     <Likes/>
                   </button>

@@ -13,9 +13,11 @@ export const UPDATE = 'UPDATE'
 export const LIKEPOST = 'LIKEPOST'
 export const COMMENT = 'COMMENT'
 export const HOTITEMS = 'HOTITEMS'
+export const LIKESLIST = 'LIKESLIST'
 
 // user 관련
 export const ADDTOLIKESLIST = 'ADDTOLIKESLIST'
+export const REMOVE_CART_ITEM = 'REMOVE_CART_ITEM'
 
 // 로딩 관련
 export const START_LOADING = "START_LOADING"

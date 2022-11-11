@@ -22,7 +22,7 @@ const App = () => {
         <Route path='/' element={<Navigate to="/posts" />} />
         <Route path='/posts' element={<Home />} />
         <Route path='/posts/search' element={<Home />} />
-        <Route path='likes' element={<LikesList />} />
+        <Route path='/user/likes' element={<LikesList />} />
         <Route path='/posting' element={<Posting />} />
         <Route path='/detail/:id' element={<Detail />} />
       </Routes>
