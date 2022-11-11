@@ -1,5 +1,5 @@
 import * as api from '../api'
-import { CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE, UPDATE, LIKEPOST, COMMENT, HOTITEMS } from '../_reducers/types'
+import { CREATE, START_LOADING, FETCH_ALL, END_LOADING, FETCH_BY_SEARCH, FETCH_ONE, DELETE, UPDATE, LIKEPOST, COMMENT, HOTITEMS, LIKESLIST } from '../_reducers/types'
 
 export const getPost = (id) => async(dispatch) => {
   try{

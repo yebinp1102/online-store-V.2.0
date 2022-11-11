@@ -8,6 +8,7 @@ import Auth from './pages/Auth'
 import Home from './pages/Home'
 import Posting from './pages/Posting'
 import Detail from './pages/Detail'
+import LikesList from './pages/LikesList'
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem('profile'))
@@ -21,6 +22,7 @@ const App = () => {
         <Route path='/' element={<Navigate to="/posts" />} />
         <Route path='/posts' element={<Home />} />
         <Route path='/posts/search' element={<Home />} />
+        <Route path='/user/likes' element={<LikesList />} />
         <Route path='/posting' element={<Posting />} />
         <Route path='/detail/:id' element={<Detail />} />
       </Routes>
