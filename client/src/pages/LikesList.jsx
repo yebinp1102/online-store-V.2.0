@@ -2,46 +2,41 @@ import React from 'react'
 import styled from 'styled-components';
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeCartItem, getLists } from '../_actions/user';
+import { removeCartItem, getCartLists } from '../_actions/user';
 import UserCardBlock from '../components/UserCardBlock';
 import { useState } from 'react';
 
 const LikesList = () => {
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem('profile'))
-  const lists = userInfo.result.cart
-  const cartDetail = useSelector((state) => state.user.cartDetail)
-  console.log('cartDetail :',cartDetail)
-  console.log('lists:',lists)
+  const userId = userInfo.result._id
+  const realCartDetail = useSelector((state) => state.user.CartLists)
 
   const [Total, setTotal] = useState(0);
 
   useEffect(()=>{
-    dispatch(getLists(lists))
+    dispatch(getCartLists(userId))
   },[dispatch])
 
-  const calculateTotal = (cartDetail) => {
+  const calculateTotal = (realCartDetail) => {
     let total = 0;
 
-    cartDetail.map(item => {
+    realCartDetail.map(item => {
       if(item.price){
-        total += parseInt(item.price, 10) * item.quantity
+        total += parseInt(item.price, 10)
       }
     })
     setTotal(total)
   }
 
   useEffect(()=>{
-    if(cartDetail){
-      calculateTotal(cartDetail)
+    if(realCartDetail){
+      calculateTotal(realCartDetail)
     }
-  },[cartDetail])
+  },[realCartDetail])
 
   const removeFromCart = (productId) => {
     dispatch(removeCartItem(productId))
-      .then(res => {
-
-      })
   }
 
   return (
@@ -50,9 +45,9 @@ const LikesList = () => {
         <div className='header'>
           <h2>나의 찜 목록</h2>
         </div>
-        <UserCardBlock products={cartDetail} removeItem={removeFromCart} />
+        <UserCardBlock products={realCartDetail} removeItem={removeFromCart} />
         <TotalPrice>
-          <p><strong>총 금액 :</strong>{Total} 원(won)</p>
+          <p><strong>총 금액 :</strong>{Total.toLocaleString()} 원(won)</p>
         </TotalPrice>
       </div>
     </Container>

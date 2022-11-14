@@ -10,10 +10,7 @@ const UserCardBlock = (props) => {
           <img src={product.selectedFile} />
         </td>
         <td>
-          {product.quantity} 개(ea)
-        </td>
-        <td>
-          {product.price ? `${product.price}원(won)` : ''}
+          {product.price ? `${product.price.toLocaleString()}원(won)` : ''}
         </td>
         <td>
           <button onClick={() => props.removeItem(product._id)}>삭제하기</button>
@@ -28,7 +25,6 @@ const UserCardBlock = (props) => {
         <thead>
           <tr>
             <th>상품 이미지</th>
-            <th>상품 수량</th>
             <th>상품 가격</th>
             <th>삭제하기</th>
           </tr>

@@ -59,3 +59,13 @@ export const getListItems = async(req, res) => {
     res.status(500).json({message: err.message})
   }
 }
+
+export const getCartLists = async(req, res) => {
+  const id = req.query.id
+  try{
+    const [cartLists] = await User.find({_id: id})
+    res.status(200).json(cartLists.cart)
+  }catch(err){
+    res.status(500).json({message: err.message})
+  }
+}
