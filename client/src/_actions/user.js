@@ -1,10 +1,10 @@
 import * as api from '../api'
-import { ADDTOLIKESLIST, REMOVE_CART_ITEM, LIKESLIST, END_LOADING, START_LOADING} from '../_reducers/types'
+import { ADDTOLIKESLIST, REMOVE_CART_ITEM, LIKESLIST, END_LOADING, START_LOADING, GETCARTLISTS} from '../_reducers/types'
 
 
-export const addToLikesList = (id, userId) => async(dispatch) => {
+export const addToLikesList = (productId, userId) => async(dispatch) => {
   try{
-    const { data } = await api.addToLikesList(id, userId)
+    const { data } = await api.addToLikesList(productId, userId)
     dispatch({ type: ADDTOLIKESLIST, payload: data})
   }catch(err){
     console.log(err)
@@ -47,5 +47,15 @@ export const getLists = (lists) => async(dispatch) => {
     dispatch({ type: END_LOADING})
   }catch(err){
     console.log('찜 목록 페이지에서 상품 정보를 불러오는데 실패 했습니다.')
+  }
+}
+
+export const getCartLists = (userId) => async(dispatch) => {
+  try{
+    const {data} = await api.getCartLists(userId);
+    const cartLists = await api.getListItems(data);
+    dispatch({type: GETCARTLISTS, payload: {data, cartLists}})
+  }catch(err){
+    console.log('찜한 상품들의 정보를 받아오는데 실패 했습니다.')
   }
 }

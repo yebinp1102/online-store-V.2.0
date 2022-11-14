@@ -13,6 +13,10 @@ const UserSchema = mongoose.Schema({
     type: Array,
     default: []
   },
+  history: {
+    type: Array,
+    default: []
+  },
   createdAt: {
     type: Date,
     default: new Date()
