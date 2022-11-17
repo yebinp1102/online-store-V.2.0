@@ -1,4 +1,4 @@
-import { ADDTOLIKESLIST, REMOVE_CART_ITEM, LIKESLIST, GETCARTLISTS } from "./types";
+import { ADDTOLIKESLIST, REMOVE_CART_ITEM, LIKESLIST, GETCARTLISTS, ON_SUCCESS_PURCHASE } from "./types";
 
 const user = (state = {}, action) => {
   switch(action.type){
@@ -28,6 +28,10 @@ const user = (state = {}, action) => {
       return {
         ...state,
         CartLists: action.payload.cartLists.data
+      }
+    case ON_SUCCESS_PURCHASE : 
+      return {
+        ...state
       }
     default:
       return state;

@@ -1,5 +1,5 @@
 import * as api from '../api'
-import { ADDTOLIKESLIST, REMOVE_CART_ITEM, LIKESLIST, END_LOADING, START_LOADING, GETCARTLISTS} from '../_reducers/types'
+import { ADDTOLIKESLIST, REMOVE_CART_ITEM, LIKESLIST, END_LOADING, START_LOADING, GETCARTLISTS, ON_SUCCESS_PURCHASE} from '../_reducers/types'
 
 
 export const addToLikesList = (productId, userId) => async(dispatch) => {
@@ -57,5 +57,15 @@ export const getCartLists = (userId) => async(dispatch) => {
     dispatch({type: GETCARTLISTS, payload: {data, cartLists}})
   }catch(err){
     console.log('찜한 상품들의 정보를 받아오는데 실패 했습니다.')
+  }
+}
+
+export const onSuccessPurchase = (purchaseData) => async(dispatch) => {
+  try{
+    const {data} = await api.successPurchase(purchaseData);
+
+    dispatch({type: ON_SUCCESS_PURCHASE, payload: data})
+  }catch(err){
+
   }
 }
