@@ -20,6 +20,11 @@ const postSchema = mongoose.Schema({
     type: [String],
     default: []
   },
+  sold:{
+    type: Number,
+    default: 0,
+    maxlength: 100,
+  },
   createdAt: {
     type: Date,
     default: new Date()

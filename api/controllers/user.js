@@ -1,6 +1,7 @@
 import User from '../models/User.js'
 import Post from '../models/Post.js'
-
+import Payment from '../models/Payment.js'
+import async from 'async'
 
 export const addToLikesList = async(req, res) => {
   // id는 상품의 id 이고, userId는 사용자의 id
@@ -65,6 +66,64 @@ export const getCartLists = async(req, res) => {
   try{
     const [cartLists] = await User.find({_id: id})
     res.status(200).json(cartLists.cart)
+  }catch(err){
+    res.status(500).json({message: err.message})
+  }
+}
+
+export const successPurchase = async(req, res) => {
+  // 1. user collection의 history 필드 안에 간단 결제 정보 push
+  let history = [];
+  let transactionData = {}
+
+  req.body.cartDetail.forEach((item) => {
+    history.push({
+      dateOfPurchase: Date.now(),
+      name: item.title,
+      id: item._id,
+      price: item.price,
+      paymentId: req.body.paymentData.paymentID
+    })
+  })
+  console.log('userData from middleware :', req.user)
+  // 2. payment collection에 구체적인 결제 정보 push
+  transactionData.user = {
+    id: req.userId
+  }
+  transactionData.data = req.body.paymentData
+  transactionData.product = history
+
+  try{
+    const user = await User.findOneAndUpdate(
+      {_id: req.userId},
+      {$push: {history: history}, $set: {cart: []}},
+      { new: true }
+    )
+
+    // Payment collection에 transactionData 정보 저장
+    const payment = new Payment(transactionData);
+    payment.save()
+
+  // 3. post collection의 sold 필드 업데이트 시키기
+  let products = [];
+  payment.product.forEach(item => {
+    products.push({id: item.id})
+  })
+
+  async.eachSeries(products, (item, callback) => {
+    Post.updateOne(
+      {_id: item.id},
+      {$inc: {
+        "sold" : item.quantity
+      }},
+      {new: false},
+      callback
+    )
+  })
+
+  // Post.updateOne()
+  // Post.updateMany()
+
   }catch(err){
     res.status(500).json({message: err.message})
   }
